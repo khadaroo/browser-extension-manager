@@ -112,7 +112,7 @@ function renderExtensions() {
       </div>
     </article>`;
 
-    extensionsEl.insertAdjacentHTML("afterbegin", extensionHTML);
+    extensionsEl.insertAdjacentHTML("beforeend", extensionHTML);
   });
 }
 
