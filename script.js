@@ -1,7 +1,7 @@
 const toggleThemeEl = document.querySelector(".toggle-theme");
 const filterTabsEl = document.querySelectorAll(".filter-tab");
 const extensionsEl = document.querySelector(".extensions");
-const dailog = document.querySelector(".modal");
+const dialog = document.querySelector(".modal");
 const cancelBtn = document.querySelector(".cancel-btn");
 const deleteBtn = document.querySelector(".delete-btn");
 
@@ -28,14 +28,14 @@ function toggleTheme() {
 
 toggleThemeEl.addEventListener("click", toggleTheme);
 
-cancelBtn.addEventListener("click", () => dailog.close());
+cancelBtn.addEventListener("click", () => dialog.close());
 deleteBtn.addEventListener("click", handleDeleteExtension);
 
-function handleDeleteExtension(e) {
+function handleDeleteExtension() {
   extensions = extensions.filter(
     (extension) => extension.name !== extensionName
   );
-  dailog.close();
+  dialog.close();
   renderExtensions();
   return;
 }
@@ -63,25 +63,25 @@ function handleExtensionActions(e) {
   const { target } = e;
 
   const selectedExtension = target.closest(".extension");
+  if (!selectedExtension) return;
+
   extensionName =
     selectedExtension.querySelector(".extension__name").textContent;
-  const toggleSwithEl = selectedExtension.querySelector(".toggle-switch");
+  if (!extensionName) return;
+
+  const extension = extensions.find((ext) => ext.name === extensionName);
+  if (!extension) return;
 
   if (target.classList.contains("remove-btn")) {
-    dailog.showModal();
+    dialog.showModal();
     return;
   }
 
-  toggleSwithEl.addEventListener("click", () => {
-    const extension = extensions.find((ext) => ext.name === extensionName);
-
+  if (target.closest(".toggle-switch")) {
     extension.isActive = !extension.isActive;
 
-    setTimeout(() => {
-      renderExtensions();
-    }, 300);
-    return;
-  });
+    renderExtensions();
+  }
 }
 
 function renderExtensions() {
